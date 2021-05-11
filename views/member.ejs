@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Member</title>
+    <style>
+      body{
+       text-align: center;
+      }
+
+      .member_list{
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <h1>Member Management Page</h1>
+    <h2>Member List</h2>
+    <ul class = "member_list">
+    <% allmember.forEach( function( allmember ){ %>
+      <li><%= allmember.memName %></li>
+    <% }); %> 
+    </ul>
+  </body>
+</html>
