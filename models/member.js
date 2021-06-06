@@ -3,9 +3,9 @@ var Schema = mongoose.Schema;
 
 var MemberSchema = new Schema(
     {
-        memID : Number ,
         memName : String ,
         memEmail : String ,
+        memPass : String ,
         memPoint : Number ,
         memGrade : Number ,
         memSex : String ,

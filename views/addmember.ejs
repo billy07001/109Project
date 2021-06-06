@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Member</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <style>
+      body{
+       text-align: center;
+      }
+
+      .member_list{
+        text-align: left;
+      }
+
+      .signup{
+        padding: 5%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <h1>Member Management Page</h1>
+    <h2>Member Sign Up</h2>
+    <div class = "signup">
+    <form method='post', action='/member/createmember', enctype='multipart/form-data'>
+      <div class="form-group row">
+        <label for="inputEmail3" class="col-sm-2 col-form-label">Name</label>
+        <div class="col-sm-10">
+          <input name = "name" type="text" class="form-control" id="name" placeholder="Name">
+        </div>
+      </div>
+
+
+      <div class="form-group row">
+        <label for="inputPassword3" class="col-sm-2 col-form-label">Email</label>
+        <div class="col-sm-10">
+          <input name = "email" type="email" class="form-control" id="email" placeholder="Email">
+        </div>
+      </div>
+
+
+      <div class="form-group row">
+        <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+        <div class="col-sm-10">
+          <input name = "password" type="password" class="form-control" id="password" placeholder="Password">
+        </div>
+      </div>
+
+
+      <div class="form-group row">
+        <label for="inputPassword3" class="col-sm-2 col-form-label">Sex</label>
+        <div class="col-sm-10">
+          <input name = "sex" type="text" class="form-control" id="sex" placeholder="Sex">
+        </div>
+      </div>
+
+
+      <div class="form-group row">
+        <div class="col-sm-10">
+          <button type="submit" class="btn btn-primary">Sign Up</button>
+        </div>
+      </div>
+    </form>
+
+    </div>
+    <ul class = "member_list">
+    <% allmember.forEach( function( allmember ){ %>
+      <li><%= allmember.memName %></li>
+    <% }); %> 
+    </ul>
+  </body>
+</html>
