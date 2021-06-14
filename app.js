@@ -7,7 +7,7 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var multer = require('multer');
 
-var mongoDB_url = 'mongodb://localhost/109Project';
+var mongoDB_url = 'mongodb://billylai:pzw4I3mdazzXOUb5KwTImMTBJbBy0HxlF4G2eutckEHACZQBiPjq5Fu9SHkglfSdZw19DrgSDmPjvmRxzAxdXA%3D%3D@billylai.mongo.cosmos.azure.com:10255/109Project?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@billylai@';
 mongoose.connect(mongoDB_url);
 
 var indexRouter = require('./routes/index');
