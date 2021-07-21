@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>EventHistory</title>
+        <style>
+            body{
+                text-align: center;
+            }
+            .event_list{
+                text-align: left;
+            }
+
+        </style>
+    </head>
+    <body>
+        <h1><%= title %></h1>
+        <h1>Event History Management Page</h1>
+        <h2>Event History List</h2>
+
+        <ul class = "event_list">
+            <table style="border:3px #cccccc solid;" cellpadding="10" border='1'>
+                <thead>
+                <tr>
+                    <th>hisEveID</th>
+                    <th>hisMemID</th>
+                    <th>hisEveTime</th>
+                    <th>delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+            <% alleventhistory.forEach( function(alleventhistory){ %>
+                    <br>
+                    <td><%= alleventhistory.hisEveID %></td>
+                    <td><%= alleventhistory.hisMemID %></td>
+                    <td><%= alleventhistory.hisEveTime %></td>
+                    <td><button id="del" type="button">刪除</button></td>
+                </tr>
+                </tbody>
+                </table>
+            <% }); %>
+
+        </ul>
+    </body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Event</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">        
+        <style>
+            body{
+                text-align: center;
+            }
+            .event_list{
+                text-align: left;
+            }
+
+        </style>
+    </head>
+    <body>
+        <h1><%= title %></h1>
+        <h1>Event Management Page</h1>
+        <h2>Event List</h2>
+        <ul class = "event_list">
+            <% allevent.forEach( function( allevent ){ %>
+              <li><%= allevent.eveName %></li>
+            <% }); %> 
+            </ul>       
+    </body>
+</html>

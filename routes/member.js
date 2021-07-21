@@ -27,27 +27,27 @@ router.get('/getOnemembers/:id', function(req, res){
     })
 });
 
-router.get('/createmember', function(req, res){
-    member.find({}, (err, allmember)=>{
-        res.render('addmember',{ title: '109 Project', allmember: allmember});
-    })
-});
-
 //POST
-router.post('/createmember', function(req, res, next){
-    member.create({memName: req.body.name , memEmail: req.body.email , memPass: req.body.password , memPoint: 100 , memGrade: 5.0 , memSex: req.body.sex , memCount: 0})
-       .catch((error) => {
-        res.status(200).json({
-            status: "error",
-            message: "Something went wrong!",
-        });
-        })
-       .then(() => {
-        res.status(200).json({
-            status: "success",
-            message: "Registered successfully!",
-            })
-        });
+router.post('/createmember', function(req, res){
+    const name = req.body.name;
+    const email = req.body.email;
+    const password = req.body.password;
+    const sex = req.body.sex;
+
+    member.create({memName: name , memEmail: email , memPass: password , memPoint: 100 , memGrade: 5.0 , memSex: sex , memCount: 0}, (err)=>{
+        if (err) {
+            console.log(err);
+            res.send(err);
+        }
+
+        else {
+            res.json({
+                status: "success",
+                message: "Registered successfully!",
+                body: req.body
+                })
+        }
+    })
 });
 
 

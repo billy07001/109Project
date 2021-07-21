@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ChatRoom</title>
+        <style>
+            body{
+                text-align: center;
+            }
+            .event_list{
+                text-align: left;
+            }
+
+        </style>
+    </head>
+    <body>
+        <h1><%= title %></h1>
+        <h1>Event History Management Page</h1>
+        <h2>Event History List</h2>
+
+        <ul class = "event_list">
+            <table style="border:3px #cccccc solid;" cellpadding="10" border='1'>
+                <thead>
+                <tr>
+                    <th>chaIssuerID</th>
+                    <th>chaHelperID</th>
+                    <th>chaMessage</th>
+                    <th>delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+            <% allchatroom.forEach( function(allchatroom){ %>
+                    <br>
+                    <td><%= allchatroom.chaIssuerID %></td>
+                    <td><%= allchatroom.chaHelperID %></td>
+                    <td><%= allchatroom.chaMessage %></td>
+                    <td><button id="del" type="button">刪除</button></td>
+                </tr>
+                </tbody>
+                </table>
+            <% }); %>
+
+        </ul>
+    </body>
+</html>
