@@ -51,6 +51,39 @@ router.post('/createmember', function(req, res){
 });
 
 
+router.post('/login', function(req, res){
+    member.findOne({ email: req.body.email }).then((user) => {
+        if (!user || req.body.password != user.password) {
+            res.status(200).json({
+                status: "error",
+                message:
+                    "Oops! Your email address or password doesn't match our record.",
+            });
+        } 
+        
+        else {
+            let token = generateToken();
+            member.findOneAndUpdate({
+                query: { memName: user.memName },
+                update: { $set: { _token: token } },
+            })
+                .select(["name"])
+                .then((user) => {
+                    res.status(200)
+                        .cookie("_token", token, {
+                            expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
+                        })
+                        .json({
+                            status: "success",
+                            message: "Login success!",
+                            user: user,
+                        });
+                });
+        }
+    });
+});
+
+
 //DELETE
 router.delete('/deletemember/:id', function(req, res){
     member.deleteOne({ _id: ObjectId(req.params.id)})

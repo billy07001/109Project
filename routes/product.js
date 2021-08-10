@@ -26,21 +26,21 @@ router.get('/getOneproducts/:id', function(req, res){
 });
 
 //POST
-router.post('/createproduct', function(req, res, next){
-    product.create({proPoint: req.body.point , proPic: req.body.pic , proName: req.body.name , proSponsor: req.body.sponsor , proInfo: req.body.info})
-       .catch((error) => {
-        res.status(200).json({
-            status: "error",
-            message: "Something went wrong!",
-        });
-        })
-       .then(() => {
-        res.status(200).json({
-            status: "success",
-            message: "Registered successfully!",
-            })
-        res.send('POST');
-        });
+router.post('/createproduct', function(req, res){
+    product.create({proPoint: req.body.point , proPic: req.body.pic , proName: req.body.name , proSponsor: req.body.sponsor , proInfo: req.body.info}, (err)=>{
+        if (err) {
+            console.log(err);
+            res.send(err);
+        }
+
+        else {
+            res.json({
+                status: "success",
+                message: "Registered successfully!",
+                body: req.body
+                })
+        }
+    })
 });
 
 

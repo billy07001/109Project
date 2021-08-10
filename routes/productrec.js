@@ -25,25 +25,24 @@ router.get('/getOneproductrecs/:id', function(req, res){
     })
 });
 
+router.post('/createproductrec', function(req, res){
+    records.create({recTime: req.body.time , recMemName: req.body.name}, (err)=>{
+        if (err) {
+            console.log(err);
+            res.send(err);
+        }
 
-router.post('/createproductrec', function(req, res, next){
-    records.create({recTime: req.body.time , recMemName: req.body.name})
-       .catch((error) => {
-        res.status(200).json({
-            status: "error",
-            message: "Something went wrong!",
-        });
-        })
-       .then(() => {
-        res.status(200).json({
-            status: "success",
-            message: "Registered successfully!",
-            })
-        });
+        else {
+            res.json({
+                status: "success",
+                message: "Registered successfully!",
+                body: req.body
+                })
+        }
+    })
 });
 
-
-
+//DELETE
 router.delete('/deleteproductrec/:id', function(req, res){
     records.deleteOne({ _id: ObjectId(req.params.id) })
     .catch((error) => {
