@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var event = require('../models/event');
 var multer = require('multer');
-var ObjectId = require("mongoose").Types.ObjectId;
 
 //event List
 //取得
@@ -17,8 +16,8 @@ router.get('/getAllevents', function(req, res){
     })
 });
 
-router.get('getOneevents/:id', function(req, res){
-    event.findOne({_id: ObjectId(req.params.id)}, (err, event) => {
+router.get('getOneevents/:evename', function(req, res){
+    event.findOne({ eveName: req.params.evename }, (err, event) => {
         //res.render('event', {title: '109 Project' , allevent : allevent });
         if(err) res.send(err);
         else{
@@ -27,32 +26,57 @@ router.get('getOneevents/:id', function(req, res){
     })
 });
 
-router.get('/createevent', function(req, res){
-    event.find({}, (err, allevent) => {
-        res.render('addevent', { title: '109 Project', allevent : allevent});
+router.get("getOneevents/:memname", function(req, res){
+    event.findOne({ memname: req.params.eveHelperName }, (err, event) => {
+        if(err) res.send(err);
+        else{
+            res.json(event);
+        }
+    })
+});
+
+router.get("getOneevents/:memname", function(req, res){
+    event.findOne({ memname: req.params.eveIssuerName }, (err, event) => {
+        if(err) res.send(err);
+        else{
+            res.json(event);
+        }
     })
 });
 
 //新增資料
 router.post('/createevent', function(req, res, next){
-    event.create({ eveName: req.body.eveName, eveState: req.body.eveState, eveType: req.body.eveType, eveLoc: req.body.eveLoc, eveIssuerID: req.body.eveIssuerID, eveHelper: req.body.eveHelper, eveTime: req.body.eveTime})
-    .catch((error) => {
-        res.status(200).json({
-           status: "error",
-           message: "error!",
-        });
-    })
-    .then(() => {
-        res.status(200).json({
-            status: "success",
-            message: "create event successfully!",
-        });
+    var today=new Date();
+
+    const evename = req.body.evename;
+    const issname = req.body.issname;
+    const helpname = req.body.helpname;
+    const state = req.body.evestate;
+    const type = req.body.evetype;
+    const loc = req.body.loc;
+    const point = req.body.point;
+
+
+    event.create({ eveName: evename, eveIssuerName: issname, eveHelperName: helpname, eveState: false, eveType: type, eveLoc: loc, eveDate: today, evePoint: point},(err)=>{
+        if(err){
+            console.log(err);
+            res.send(err);
+        }
+
+        else{
+            res.json({
+                status: "success",
+                message: "create event successfully!",
+                body: req.body,
+                buildday: today
+            })
+        }
     });
 });
 
 //更新
-router.put('/updatemember/:id', function(req, res){
-    event.updateOne({ _id: ObjectId(req.params.id) }, req.body )
+router.put('/updateevent/:evename', function(req, res){
+    event.updateOne({ eveName: req.params.evename }, req.body )
     .catch((error) => {
         res.status(200).json({
             status: "error",
@@ -70,8 +94,8 @@ router.put('/updatemember/:id', function(req, res){
 });
 
 //刪除
-router.delete('/deleteevent/:id', function(req, res){
-    event.deleteOne({ _id: ObjectId(req.params.id) })
+router.delete('/deleteevent/:evename', function(req, res){
+    event.deleteOne({ eveName: req.params.evename })
     .catch((error) => {
         res.status(200).json({
             status: "error",

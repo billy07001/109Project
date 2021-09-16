@@ -4,6 +4,10 @@ var member = require('../models/member');
 var multer = require('multer');
 var ObjectId = require("mongoose").Types.ObjectId;
 
+var generateToken = () => {
+    return Math.random().toString(36).substr(2);
+};
+
 //Member List
 //GET
 router.get('/getAllmembers', function(req, res){
@@ -17,8 +21,8 @@ router.get('/getAllmembers', function(req, res){
     })
 });
 
-router.get('/getOnemembers/:id', function(req, res){
-    member.findOne({_id: ObjectId(req.params.id)}, (err, member)=>{
+router.get('/getOnemembers/:name', function(req, res){
+    member.findOne({memName: req.params.name}, (err, member)=>{
         //res.render('member',{ title: '109 Project', allmember : allmember });
         if (err) res.send(err);
         else {
@@ -52,41 +56,32 @@ router.post('/createmember', function(req, res){
 
 
 router.post('/login', function(req, res){
-    member.findOne({ email: req.body.email }).then((user) => {
-        if (!user || req.body.password != user.password) {
-            res.status(200).json({
-                status: "error",
-                message:
-                    "Oops! Your email address or password doesn't match our record.",
-            });
-        } 
-        
-        else {
-            let token = generateToken();
-            member.findOneAndUpdate({
-                query: { memName: user.memName },
-                update: { $set: { _token: token } },
+    const email = req.body.email;
+    const password = req.body.password;
+
+    member.find({memEmail:email}, function(err, user){
+        if (err || user[0].memPass != password){
+            res.json({
+                status: "Error",
+                message: "Login Fail",
+                err: err
             })
-                .select(["name"])
-                .then((user) => {
-                    res.status(200)
-                        .cookie("_token", token, {
-                            expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
-                        })
-                        .json({
-                            status: "success",
-                            message: "Login success!",
-                            user: user,
-                        });
-                });
         }
-    });
+
+        else {
+            res.json({
+                status: "Success",
+                message: "Login Success",
+                token: user[0].memName
+            })
+        }
+    })
 });
 
 
 //DELETE
-router.delete('/deletemember/:id', function(req, res){
-    member.deleteOne({ _id: ObjectId(req.params.id)})
+router.delete('/deletemember/:name', function(req, res){
+    member.deleteOne({ memName: req.param.name})
     .catch((error) => {
         res.status(200).json({
             status: "error",
@@ -103,8 +98,8 @@ router.delete('/deletemember/:id', function(req, res){
 })
 
 //PUT
-router.put('/updatemember/:id', function(req, res){
-    member.updateOne({ _id: ObjectId(req.params.id) }, req.body)
+router.put('/updatemember/:name', function(req, res){
+    member.updateOne({ memName: req.params.name }, req.body)
     .catch((error) => {
         res.status(200).json({
             status: "error",

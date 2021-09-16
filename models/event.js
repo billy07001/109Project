@@ -4,12 +4,13 @@ var Schema = mongoose.Schema;
 var EventSchema = new Schema(
     {
         eveName : String ,
+        eveIssuerName : String ,
+        eveHelperName : String ,
         eveState : Boolean ,
         eveType : String ,
         eveLoc : String ,
-        eveIssuerID : Number ,
-        eveHelper : Number ,
-        eveTime : Date
+        eveDate : Date , 
+        evePoint : Number
     }
 );
 

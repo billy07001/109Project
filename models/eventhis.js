@@ -3,9 +3,10 @@ var Schema = mongoose.Schema;
 
 var HistorySchema = new Schema(
     {
-        hisEveID : Number,
-        hisMemID : Number,
-        hisEveTime : Date
+        hisEveName : String,
+        hisEveIssName : String,
+        hisEveHelpName : String,
+        hisEveDate : Date
     }
 );
 

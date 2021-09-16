@@ -3,8 +3,9 @@ var Schema = mongoose.Schema;
 
 var ChatSchema = new Schema(
     {
-        chaIssuerID : Number ,
-        chaHelperID : Number ,
+        chaEveName : String,
+        chaIssuerName : String ,
+        chaHelperName : String ,
         chatMessage : Object
     }
 );

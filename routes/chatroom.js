@@ -2,8 +2,20 @@ var express = require('express');
 var router = express.Router();
 var chatroom = require('../models/chatroom');
 var multer = require('multer');
-var ObjectId = require("mongoose").Types.ObjectId;
 
+//Socket
+router.post('/chat', (req, res, io) => {
+    //Socket.IO
+    io.on('connection', function (socket) {
+        console.log('User has connected to Index');
+        //ON Events
+        socket.on('admin', function () {
+            console.log('Successful Socket Test');
+        });
+
+        //End ON Events
+    });
+})
 
 router.get('/getAllchatrooms', function(req, res){
     chatroom.find({}, (err, allchatroom) => {
@@ -16,8 +28,16 @@ router.get('/getAllchatrooms', function(req, res){
 
 });
 
-router.get('/getOnechatrooms/:id', function(req, res){
-    chatroom.findOne({_id: ObjectId(req.params.id)}, (err, chatroom) => {
+router.get('/getOnechatrooms/:name', function(req, res){
+    chatroom.findOne( { chaIssuerName: req.params.name }, (err, chatroom) => {
+        if(err) res.send(err);
+        else {
+            res.json(chatroom);
+        }
+    })
+});
+router.get('/getOnechatrooms/:name', function(req, res){
+    chatroom.findOne( { chaHelperName: req.params.name }, (err, chatroom) => {
         if(err) res.send(err);
         else {
             res.json(chatroom);
@@ -28,25 +48,30 @@ router.get('/getOnechatrooms/:id', function(req, res){
 
 //新增資料
 router.post('/createchatroom', function(req, res, next){
-    chatroom.create({ chaIssuerID: req.body.chaIsssuerID, chaHelperID: req.body.chaHelperID, chaMessage: req.body.chatMessage })
-    .catch((error) => {
-        res.status(200).json({
-           status: "error",
-           message: "error!",
-        });
+    const evename = req.body.evename;
+    const issname = req.body.issname;
+    const helpname = req.body.helpname;
+    const message = req.body.message;
+
+    chatroom.create({ chaEveName: evename, chaIssuerName: issname, chaHelperName: helpname, chaMessage: message },(err)=>{
+        if(err){
+            console.log(err);
+            res.send(err);
+        }
+
+        else{
+            res.json({
+                status: "success",
+                message: "create chatroom successfully!",
+                body: req.body,
+            })
+        }
     })
-    .then(() => {
-        res.status(200).json({
-            status: "success",
-            message: "create chatroom successfully!",
-        });
-        res.send('POST');
-    });
 });
 
 //更新
-router.put('/updatechatroom/:id', function(req, res){
-    chatroom.updateOne({ _id: ObjectId(req.params.id) }, req.body )
+router.put('/updatechatroom/:evename', function(req, res){
+    chatroom.updateOne({ chaEveName: req.params.evename }, req.body )
     .catch((error) => {
         res.status(200).json({
             status: "error",
@@ -64,12 +89,12 @@ router.put('/updatechatroom/:id', function(req, res){
 });
 
 //刪除
-router.delete('/deletechatroom/:id', function(req, res){
-    member.deleteOne({ _id: ObjectId(req.params.id)})
+router.delete('/deletechatroom/:evename', function(req, res){
+    member.deleteOne({ chaEveName: req.params.evename})
     .catch((error) => {
         res.status(200).json({
             status: "error",
-            message: "error!",
+            message: "delete failed!",
         });
         console.log(error);
     })

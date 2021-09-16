@@ -16,8 +16,8 @@ router.get('/getAllproductrecs', function(req, res){
     })
 });
 
-router.get('/getOneproductrecs/:id', function(req, res){
-    records.findOne({_id: ObjectId(req.params.id)}, (err, productrec)=>{
+router.get('/getOneproductrecs/:name', function(req, res){
+    records.findOne({recMemName: req.params.name}, (err, productrec)=>{
         if (err) res.send(err);
         else {
             res.json(productrec);
@@ -43,8 +43,8 @@ router.post('/createproductrec', function(req, res){
 });
 
 //DELETE
-router.delete('/deleteproductrec/:id', function(req, res){
-    records.deleteOne({ _id: ObjectId(req.params.id) })
+router.delete('/deleteproductrec/:name', function(req, res){
+    records.deleteOne({ recMemName: req.params.name})
     .catch((error) => {
         res.status(200).json({
             status: "error",

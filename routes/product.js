@@ -16,8 +16,8 @@ router.get('/getAllproducts', function(req, res){
     })
 });
 
-router.get('/getOneproducts/:id', function(req, res){
-    product.findOne({_id: ObjectId(req.params.id)}, (err, product)=>{
+router.get('/getOneproducts/:name', function(req, res){
+    product.findOne({proName: req.params.name}, (err, product)=>{
         if (err) res.send(err);
         else {
             res.json(product);
@@ -45,8 +45,8 @@ router.post('/createproduct', function(req, res){
 
 
 //DELETE
-router.delete('/deleteproduct/:id', function(req, res){
-    product.deleteOne({ _id: ObjectId(req.params.id) })
+router.delete('/deleteproduct/:name', function(req, res){
+    product.deleteOne({ proName: req.params.name})
     .catch((error) => {
         res.status(200).json({
             status: "error",
@@ -63,8 +63,8 @@ router.delete('/deleteproduct/:id', function(req, res){
 })
 
 //PUT
-router.put('/updateproduct/:id', function(req, res){
-    product.updateOne({ _id: ObjectId(req.params.id) }, req.body)
+router.put('/updateproduct/:name', function(req, res){
+    product.updateOne({ proName: req.params.name }, req.body)
     .catch((error) => {
         res.status(200).json({
             status: "error",
